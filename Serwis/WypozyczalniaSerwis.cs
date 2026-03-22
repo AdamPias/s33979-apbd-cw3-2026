@@ -67,6 +67,88 @@ public class WypozyczalniaSerwis
 
     public void ZwrocSprzet(Wypozyczenie wypozyczenie)
     {
-        
+        if (wypozyczenie.TerminZwrotu < DateTime.Now)
+        {
+            int dniOpoznienia = (DateTime.Now - wypozyczenie.TerminZwrotu).Days;
+            double kara = wypozyczenie.Co.Kara * dniOpoznienia;
+            wypozyczenie.Kto.Naliczonekary += kara;
+        }
+        wypozyczenie.Co.Status = "Dostepny";
+        wypozyczenie.Zwrocono = DateTime.Now;
     }
+
+    public void NiedostepnySprzet(Sprzet sprzet)
+    {
+        int jest = 0;
+        foreach (var wypozyczenie in wypozyczenia)
+        {
+            if (wypozyczenie.Co.Id == sprzet.Id && wypozyczenie.Zwrocono is null)
+                jest++;
+        }
+
+        if (jest > 0)
+        {
+            Console.WriteLine("Sprzet jest aktualnie wypozyczany nie mozna go ustawic jako niedostepny!!!");
+            return;
+        }
+
+        Console.WriteLine("Status sprzetu o id:" + sprzet.Id + " zostal ustawiony na niedostepny");
+        sprzet.Status = "Niedostepny";
+
+    }
+
+    public void AktywneWypozyczeniaUzytkownika(Uzytkownik uzytkownik)
+    {
+        foreach (var wypozyczenie in wypozyczenia)
+        {
+            if (wypozyczenie.Kto.Id == uzytkownik.Id && wypozyczenie.Zwrocono is null)
+            {
+                Console.WriteLine(wypozyczenie);
+            }
+        }
+    }
+
+    public void Przeterminowane()
+    {
+        foreach (var wypozyczenie in wypozyczenia)
+        {
+            if (wypozyczenie.TerminZwrotu < DateTime.Now && wypozyczenie.Zwrocono is null)
+            {
+                Console.WriteLine(wypozyczenie);
+            }
+        }
+    }
+
+    public void GenerujRaport()
+    {
+        int zwroconeNaCzas = 0;
+        int zwroconePoCzasie = 0;
+        int nieZwrocone = 0;
+    
+        foreach (var wypozyczenie in wypozyczenia)
+        {
+            if (wypozyczenie.Zwrocono is null)
+            {
+                nieZwrocone++;
+            }
+            else if (wypozyczenie.Zwrocono <= wypozyczenie.TerminZwrotu)
+            {
+                zwroconeNaCzas++;
+            }
+            else
+            {
+                zwroconePoCzasie++;
+            }
+        }
+        
+        Console.WriteLine("--- RAPORT WYPOZYCZALNI ---");
+        Console.WriteLine("Ilość wszystkich sprzętów: " + sprzety.Count);
+        Console.WriteLine("Ilość wszystkich użytkowników: " + uzytkownicy.Count);
+        Console.WriteLine("Wszystkie wypożyczenia: " + wypozyczenia.Count);
+        Console.WriteLine("Wypożyczenia zwrócone na czas: " + zwroconeNaCzas);
+        Console.WriteLine("Wypożyczenia zwrócone po czasie: " + zwroconePoCzasie);
+        Console.WriteLine("Wypożyczenia, które nie zostały jeszcze zwrócone: " + nieZwrocone);
+        Console.WriteLine("---------------------------");
+    }
+    
 }
