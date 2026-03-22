@@ -5,10 +5,10 @@ public abstract class  Sprzet
     private static int idCounter;
     
 
-    protected Sprzet(string nazwa, string status, double kara)
+    protected Sprzet(string nazwa, double kara)
     {
         this.Nazwa = nazwa;
-        this.Status = status;
+        this.Status = "Dostepny";
         this.Kara = kara;
         this.Id = idCounter;
         idCounter++;
