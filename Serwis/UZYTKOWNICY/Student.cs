@@ -1,5 +1,5 @@
 ﻿namespace Serwis.UZYTKOWNICY;
-
+using System;
 public class Student : Uzytkownik
 {
     public Student(string imie, string nazwisko, String ska, int semestr) : base( imie, nazwisko, 2)

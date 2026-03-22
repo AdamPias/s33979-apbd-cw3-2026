@@ -1,5 +1,6 @@
-﻿using Serwis.UZYTKOWNICY;
-
+﻿using System;
+using Serwis.UZYTKOWNICY;
+using System.Collections.Generic;
 namespace Serwis;
 
 public class WypozyczalniaSerwis
@@ -18,8 +19,54 @@ public class WypozyczalniaSerwis
         this.sprzety.Add(nowySprzet);
     }
 
-    public void DodajWypozyczenie(Wypozyczenie noweWypozyczenie)
+    public bool DodajWypozyczenie(Uzytkownik uzytkownik, Sprzet sprzet, int naIleDni)
     {
-        this.wypozyczenia.Add(noweWypozyczenie);
+        int ile = 0;
+        foreach (var wypozyczenie in wypozyczenia)
+        {
+            if (wypozyczenie.Kto == uzytkownik && wypozyczenie.Zwrocono is null)
+            {
+                ile++;
+            }
+        }
+
+        if (!(sprzet.Status == "Dostepny"))
+        {
+            Console.WriteLine("Podany sprzet jest aktualnie nie dostępny!!");
+            return false;
+        }if (ile >= uzytkownik.Limit)
+        {
+            Console.WriteLine("Osiagnales limit wypozyczen!!!");
+            return false;
+        }
+
+        sprzet.Status = "Wypozyczony";
+        Wypozyczenie noweWypozyczenie = new Wypozyczenie(uzytkownik, sprzet, DateTime.Now, DateTime.Now.AddDays(naIleDni));
+        wypozyczenia.Add(noweWypozyczenie);
+        return true;
+    }
+
+    public void WyswietlWszystkieSprzety()
+    {
+        for (var i = 0; i < sprzety.Count; i++)
+        {
+            Console.WriteLine(sprzety[i]);
+        }
+    }
+
+    public void WyswietlDostepneSprzety()
+    {
+        foreach (var sprzet in sprzety)
+        {
+            if (sprzet.Status == "Dostepny")
+            {
+                Console.WriteLine(sprzet);
+            }
+        }
+    }
+
+    public void ZwrocSprzet(Wypozyczenie wypozyczenie)
+    {
+        
     }
 }

@@ -1,5 +1,5 @@
 ﻿namespace Serwis.UZYTKOWNICY;
-
+using System;
 public abstract class Uzytkownik
 {
 

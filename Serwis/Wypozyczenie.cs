@@ -1,5 +1,5 @@
 ﻿using Serwis.UZYTKOWNICY;
-
+using System;
 namespace Serwis;
 
 public class Wypozyczenie

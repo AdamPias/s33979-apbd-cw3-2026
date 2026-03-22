@@ -21,4 +21,9 @@ public abstract class  Sprzet
     public string Status { get; set; }
 
     public double Kara { get; set; }
+
+    public override string ToString()
+    {
+        return $"ID: {Id} | Nazwa: {Nazwa} | Status: {Status}";
+    }
 }
