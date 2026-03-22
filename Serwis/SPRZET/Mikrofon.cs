@@ -1,9 +1,10 @@
 ﻿namespace Serwis;
 
+using System;
 public class Mikrofon : Sprzet
 {
-    public Mikrofon(string nazwa, string status, double kara, String przetwornik, String pasmo) 
-        : base(nazwa, status, kara)
+    public Mikrofon(string nazwa, double kara, String przetwornik, String pasmo) 
+        : base(nazwa, kara)
     {
         this.Pasmo = pasmo;
         this.Przetwornik = przetwornik;

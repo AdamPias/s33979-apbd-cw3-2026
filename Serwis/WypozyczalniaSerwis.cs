@@ -43,6 +43,9 @@ public class WypozyczalniaSerwis
         sprzet.Status = "Wypozyczony";
         Wypozyczenie noweWypozyczenie = new Wypozyczenie(uzytkownik, sprzet, DateTime.Now, DateTime.Now.AddDays(naIleDni));
         wypozyczenia.Add(noweWypozyczenie);
+
+        Console.WriteLine("Wypozyczono sprzet: " + sprzet);
+        Console.WriteLine("Uzytkownikowi: " + uzytkownik);
         return true;
     }
 
@@ -65,16 +68,25 @@ public class WypozyczalniaSerwis
         }
     }
 
-    public void ZwrocSprzet(Wypozyczenie wypozyczenie)
+    public void ZwrocSprzet(Sprzet sprzet)
     {
-        if (wypozyczenie.TerminZwrotu < DateTime.Now)
+        foreach (var wypozyczenie in wypozyczenia)
         {
-            int dniOpoznienia = (DateTime.Now - wypozyczenie.TerminZwrotu).Days;
-            double kara = wypozyczenie.Co.Kara * dniOpoznienia;
-            wypozyczenie.Kto.Naliczonekary += kara;
+            if (wypozyczenie.Co.Id == sprzet.Id && wypozyczenie.Zwrocono is null)
+            {
+             
+                if(DateTime.Now > wypozyczenie.TerminZwrotu){
+                    int ile = (DateTime.Now - wypozyczenie.TerminZwrotu).Days;
+                    double kara = sprzet.Kara * ile;
+                    Console.WriteLine("Naliczono : "+ kara + "zl kary");
+                    wypozyczenie.Kto.Naliczonekary += kara;
+                }
+                wypozyczenie.Zwrocono = DateTime.Now;
+                sprzet.Status = "Dostepny";
+            }
         }
-        wypozyczenie.Co.Status = "Dostepny";
-        wypozyczenie.Zwrocono = DateTime.Now;
+
+        Console.WriteLine("Zwrocono :" + sprzet);
     }
 
     public void NiedostepnySprzet(Sprzet sprzet)

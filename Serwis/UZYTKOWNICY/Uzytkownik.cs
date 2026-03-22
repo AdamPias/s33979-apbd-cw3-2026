@@ -3,7 +3,7 @@ using System;
 public abstract class Uzytkownik
 {
 
-    private static int idCounter;
+    private static int idCounter = 1;
 
     protected Uzytkownik(string imie, string nazwisko, int limit)
     {

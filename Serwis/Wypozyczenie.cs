@@ -17,9 +17,13 @@ public class Wypozyczenie
     public DateTime DataWypozyczenia { get; set; }
     public DateTime TerminZwrotu { get; set; }
     public DateTime? Zwrocono { get; set; }
-    
-    
-    
-    
-    
+
+    public override string ToString()
+    {
+        if (Zwrocono is null)
+        {
+            return $"Wypozycznie Uzytkownika: {Kto}\nSprzet: {Co} | Data Wypozycznie: {DataWypozyczenia} | Zwrocono: Nie zwrocono";
+        }
+        return $"Wypozycznie Uzytkownika: {Kto}\nSprzet: {Co} | Data Wypozycznie: {DataWypozyczenia} | Zwrocono: {Zwrocono}";
+    }
 }
